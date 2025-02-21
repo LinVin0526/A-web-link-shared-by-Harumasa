@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>浅羽悠真发来的Date邀请</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: #FFFACD; /* 柠檬黄背景 */
+            font-family: "Comic Sans MS", "Arial", sans-serif;
+            transition: all 0.3s ease-in-out;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        #content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        img {
+            width: 250px;
+            height: auto;
+            border-radius: 15px;
+            transition: transform 0.3s ease-in-out, margin-bottom 0.3s ease-in-out;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333366; /* 蓝黑色标题 */
+            margin-bottom: 20px;
+            transition: transform 0.3s ease-in-out, margin-bottom 0.3s ease-in-out;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+            transition: transform 0.3s ease-in-out, gap 0.3s ease-in-out;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 25px;
+            transition: transform 0.3s, font-size 0.3s, background 0.3s ease-in-out, margin 0.3s ease-in-out;
+            color: white;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #buttonA {
+            background: #FFB6C1; /* 甜美淡粉色 */
+        }
+
+        #buttonB {
+            background: #A7C7E7; /* 温柔浅蓝色 */
+        }
+
+    </style>
+</head>
+<body>
+    <div id="content">
+        <img id="image" src="https://raw.githubusercontent.com/LinVin0526/image-host/main/IMG_0056.GIF" alt="悠真">
+        <h1 id="title">可以跟我约会吗？</h1>
+        <div class="buttons">
+            <button id="buttonA" onclick="chooseA()">可以</button>
+            <button id="buttonB" onclick="chooseB()">不行</button>
+        </div>
+    </div>
+
+    <script>
+        let buttonB = document.getElementById("buttonB");
+        let buttonA = document.getElementById("buttonA");
+        let title = document.getElementById("title");
+        let image = document.getElementById("image");
+        let buttonsDiv = document.querySelector(".buttons");
+        let buttonASize = 1;
+        let rejectionCount = 0;
+
+        // 预设的图片变更规则
+        let imageChanges = {
+            1: "https://raw.githubusercontent.com/LinVin0526/image-host/main/IMG_0055.GIF",
+            3: "https://raw.githubusercontent.com/LinVin0526/image-host/main/IMG_0053.GIF",
+            4: "https://raw.githubusercontent.com/LinVin0526/image-host/main/IMG_0050.GIF",
+            6: "https://raw.githubusercontent.com/LinVin0526/image-host/main/IMG_0050.GIF",
+            7: "https://raw.githubusercontent.com/LinVin0526/image-host/main/IMG_0054.GIF"
+        };
+
+        let endingImage = "https://raw.githubusercontent.com/LinVin0526/image-host/main/CocoAI_20250221_025611.png";
+
+        function chooseA() {
+            document.body.innerHTML = `
+                <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+                    <img src="${endingImage}" alt="悠真开心" style="width: 250px; border-radius: 15px; margin-bottom: 20px;">
+                    <h1 style="color:#333366; font-size: 40px;">
+                        我已经迫不及待去见你了~ 💖
+                    </h1>
+                </div>
+            `;
+        }
+
+        function chooseB() {
+            rejectionCount++;
+
+            // A 按钮变大
+            buttonASize += 0.2;
+            buttonA.style.transform = `scale(${buttonASize})`;
+
+            // 调整 A 和 B 之间的间距
+            let buttonGap = 20 + buttonASize * 30;
+            buttonsDiv.style.gap = `${buttonGap}px`;
+
+            // 变更标题 & B 按钮文本
+            let messages = [
+                { title: "可是我想见你~", bText: "不见" },
+                { title: "一起出去玩好吗？好的", bText: "不好" },
+                { title: "真的不去？你有事要忙？", bText: "我要去找其他人约会" },
+                { title: "那我呢？果然爱会消失吗QAQ", bText: "开玩笑的" },
+                { title: "太迟了，已经碎掉了，但你现在答应的话,大概还能拼起来", bText: "拒绝" },
+                { title: "拜托啦~这是我一生一次的请求", bText: "再考虑一下" },
+                { title: "去约会,我的卡随便你怎么刷都可以", bText: "不行就是不行" }
+            ];
+
+            if (rejectionCount <= messages.length) {
+                title.innerText = messages[rejectionCount - 1].title;
+                buttonB.innerText = messages[rejectionCount - 1].bText;
+            }
+
+            // 切换图片
+            if (imageChanges[rejectionCount]) {
+                image.src = imageChanges[rejectionCount];
+            }
+
+            // 第 7 次点击 B 按钮时弹出提示框 + 禁用 B 按钮
+            if (rejectionCount === messages.length) {
+                alert("不答应的话，我可能会一直等到天黑哦…🌙\n（再考虑一下好不好嘛~）");
+
+                buttonB.style.background = "#B0C4DE";
+                buttonB.style.cursor = "not-allowed";
+                buttonB.disabled = true;
+
+                buttonA.style.transform = "scale(3)";
+            }
+
+            // 调整标题和图片的位置，防止被 A 挡住
+            let offsetY = buttonASize * 30;
+            if (offsetY > 200) offsetY = 200;
+            title.style.transform = `translateY(-${offsetY / 3}px)`;
+            image.style.transform = `translateY(-${offsetY / 4}px)`;
+        }
+    </script>
+</body>
+</html>
